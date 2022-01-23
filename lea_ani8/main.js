@@ -46,13 +46,16 @@ function load_parser(parser) {
         }
         var el = document.createElement('ul');
         el.innerHTML = `
-        <a href=https://youtu.be/${json.url}?t=${Math.round(json.start)}>
-            <img src="https://i.ytimg.com/vi/${json.url}/hqdefault.jpg" alt="">
-            <div class='content'>
+        <div>
+            <img src="https://i.ytimg.com/vi/${json.url}/hqdefault.jpg" alt="Monsieur Tuna">
+            <div class="content">
                 <span>${json.title}</span>
-                <span>${json.text}</span>
+                <span class='text'>${json.text}</span>
             </div>
-        </a>
+            <div class='expand-outline'>
+                <ion-icon name="expand-outline"></ion-icon>
+            </div>
+        </div>
         `;
 
         path.appendChild(el);
@@ -160,11 +163,29 @@ function back_parent() {
 }
 
 
+
 const resiul = function () {
+    const imgs = document.querySelectorAll('.main ul img')
+    const spans = document.querySelectorAll('.main ul span')
+
 
     document.querySelectorAll('.main ul').forEach((e) => {
-        e.style.height = `${e.offsetWidth *1.5}px`;
+        e.style.height = `${e.offsetWidth *1.3}px`;
         // console.log(e.offsetWidth)
+
+        imgs.forEach((img) => {
+            img.style.height = `${e.offsetHeight * 5/12}px`
+        })
+
+        const width = e.offsetWidth * 90/100
+        console.log(width)
+        spans.forEach((span) => {
+            
+            span.style.fontSize = `${width * 17/225}px`
+        })
+
+        // e.offsetWidth * 90/100
+
     })
     
 }
@@ -259,14 +280,35 @@ document.querySelector('.list').addEventListener('click', (e) => {
 
 })
 
+const box_search = document.querySelector('#search');
 
-document.querySelector('#search').addEventListener('keypress', (e) => {
+box_search.addEventListener('keypress', (e) => {
     if (e.key == 'Enter') {
         // const main = document.querySelector('.body .main');
 
-        const text = e.target.value;
-        const mes = document.querySelector('.tile-container .container .files .text span');
-        fetch(`/?text=${text}`).then((e) => {
+        search()
+
+    }
+})
+
+
+document.querySelector('#button_search').addEventListener('click', (e) => {
+    search()
+})
+
+
+function search() {
+
+    const text = box_search.value;
+    const mes = document.querySelector('.tile-container .container .files .text span');
+    // fetch(`/data/?text=${text}`)
+    
+    if (text.length > 0){
+        fetch('/search', {
+            method: 'POST',
+            body: JSON.stringify({'text': text})
+        })
+        .then((e) => {
             e.json().then((data) => {
 
                 mes.innerHTML = '';
@@ -297,9 +339,9 @@ document.querySelector('#search').addEventListener('keypress', (e) => {
             })
 
         })
-
     }
-})
+}
+
 
 document.querySelector('.se ion-icon').addEventListener('click', (e) => {
     document.querySelector('#search').value = '';
@@ -335,5 +377,15 @@ document.querySelector('.container .files .icon').addEventListener('click', () =
 setwidth();
 
 
+function test () {
+    fetch('/search', {
+        method: 'POST',
+        body: JSON.stringify({text: "hello"})
+    })
+    .then((e) => e.json())
+    .then(data => {
+            console.log(data)
+        })
+}
 
 
