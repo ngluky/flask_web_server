@@ -19,8 +19,6 @@ def home():
     # return send_from_directory('html',r'.\lea_ani8\index.html')
     return send_file(r'.\files\html\index.html')
 
-
-
 @app.route('/files/<path>/<name>')
 def files(path ,name):
     return send_file(f'./files/{path}/{name}')
@@ -28,8 +26,16 @@ def files(path ,name):
 @app.route('/tabinput', methods=['POST'])
 def tabinput():
     text = json.loads(request.data).get('index')
-    return text
+    if text == 0 :
+        return 'No have' ,300
+    elif text == 1 :
+        return send_file(r'.\files\html\videos.html'), 200
+    elif text == 2 :
+        return 'No have' ,300
+    elif text == 3 :
+        return 'No have' ,300
 
+    
 def get(text):
     file = open('a.json', encoding='utf-8')
     op = json.load(file)

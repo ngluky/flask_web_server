@@ -5,9 +5,14 @@ const fu = document.getElementById('fu')
 const sideBare = document.querySelector('.sideBare');
 const root = document.documentElement.style;
 const lis_div = document.querySelectorAll('.sideBare .list li div')
-const lis = document.querySelectorAll('.sideBare .list li')
 const ul_background = document.querySelector('.sideBare .list ul.background')
 const tab_input = document.querySelector('.tab_input')
+const lis = [
+    'home',
+    'videos',
+    'drama',
+    'orthodox'
+]
 
 
 
@@ -99,21 +104,37 @@ function setcolor_span() {
 
 document.querySelector('.list').addEventListener('click', (e) => {
     const path = e.path[e.path.length - 8];
-    const li = (e.path[e.path.length - 7]).classList
-    // console.log(li[0]);
+    const li = (e.path[e.path.length - 7]).classList;
+    
+    const index = lis.indexOf(li[0]);
 
-    if (li != 'i') {
-
+    if (index != -1){
+        get_tab_input(index);
+        
         tab(); // Highlight tab selection
-
-        path.classList.add('action')
-
+        
+        path.classList.add('action');
+        
         document.querySelector('.action ion-icon').style.color = 'black';// background white text color black
         document.querySelector('.action span').style.color = 'black';// background white icon color black
+           
+        transform()
+        
     }
 
-
 })
+
+function is_intab_video() {
+
+    const a = document.querySelector('.sideBare .list li.videos div')
+    if (a.className == 'action') {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
 
 const box_search = document.querySelector('#search');
 
@@ -121,7 +142,17 @@ box_search.addEventListener('keypress', (e) => {
     if (e.key == 'Enter') {
         // const main = document.querySelector('.body .main');
 
-        search() // NOT YET
+
+        if (is_intab_video()) {
+            search() // NOT YET
+        }
+        else {
+            document.querySelector('.sideBare .list li.videos div').click();
+            sleep(500).then(() => {
+                search();
+            })
+        }
+
 
     }
 })
@@ -140,13 +171,9 @@ document.querySelector('.se ion-icon').addEventListener('click', (e) => {
 })
 
 
-document.querySelector('.sideBare .list').addEventListener('click', () => {
-    transform()
-})
-    
 function transform() {
     lis_div.forEach((e,j) => {
-        console.log(e)
+        // console.log(e)
         if (e.className == 'action') {
             // console.log('hello')
             ul_background.style.transform = `translateY(calc(100% * ${j}))`
@@ -159,15 +186,48 @@ function transform() {
 transform()
 
 
+function loading_files(index) {
+    switch (index) {
+        case 1:
+            try {
+                if (json_all_search.length > 0) {
+                    load_parser(1)
+                }
+            }
+            catch {
+                var script = document.createElement('script');
+                script.src = '/files/js/vides.js'
+                tab_input.appendChild(script)
+            }
+            break
+        case 2:
+            break
+    
+    }
+
+}
+
 
 function get_tab_input(index) {
     fetch('/tabinput', {
         method: 'POST',
         body: JSON.stringify({'index': index})
-    }).then((e) => {
-        console.log(e.text)
+    }).then(async (e) => {
+        if (e.status == 200) {
+            var html = await e.text();
+            tab_input.innerHTML = html;
+
+            loading_files(index)
+
+        }
+        else {
+            var html = await e.text();
+            tab_input.innerHTML = html;
+        }
     })
 }
+
+// get_tab_input(0)
 
 function test () { // name tell everything
     fetch('/search', {

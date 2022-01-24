@@ -10,6 +10,8 @@ window.addEventListener('resize', (rr) => { // get event resize
     resiul() // resi tab to fit
 })
 
+
+
 function load_parser(parser) {
     console.log(parser)
 
@@ -175,7 +177,16 @@ const resiul = function () {
     
 }
 
+function check_li () {
+    const action = document.querySelector('.list li div.action');
+    if (action.offsetParent.className == 'videos') { // I just found out there's this "offsetParent"
+        return true
+    }
+    else return false
+}
+
 function search() {
+
 
     const text = box_search.value;
     const mes = document.querySelector('.tile-container .container .files .text span');
@@ -237,3 +248,5 @@ document.querySelector('.container .files .icon').addEventListener('click', () =
     }
     // if (entiti)
 })
+
+function have() {}

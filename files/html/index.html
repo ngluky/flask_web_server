@@ -96,15 +96,24 @@
 
         <div class="tab_input">
 
-            <div class='tile-container'>
-                
-        </div>
+            <div class='table'>
+                <canvas>
+                <script>
+                    window.addEventListener('resize', () => {
+                        const a = document.querySelector('.body .tab_input canvas');
+                        console.log(a)
+                    })
+                    // resize
+                </script>
 
+
+            </div>
             
         </div>
 
     
     <script src='files/js/main.js'></script>
+
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body> 

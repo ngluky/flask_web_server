@@ -74,14 +74,18 @@ body {
     /* transition: all 0.3s; */
 }
 
+.sideBare .list li ,
+.sideBare .list li div {
+    z-index: 5;
+
+}
 
 .sideBare .list li ,
 .sideBare .list ul  {
-    z-index: 10;
     list-style: none;
     width: 100%;
     height: 36px;
-    cursor: pointer;
+    /* cursor: pointer; */
     /* transition: all 0.3s; */
 }
 
@@ -130,6 +134,10 @@ span.span {
 .sideBare.full .list li div.action ion-icon,
 .sideBare.full .list li div.action span {
     transform: translateX(10px);
+}
+
+.sideBare.no-full .list li div.action span {
+    z-index: 0;
 }
 
 /* ion-icon */
@@ -210,13 +218,10 @@ span.span {
     width: 20px;
 }
 
-.sideBare .list li div {
-    z-index: 100;
-}
 
 .body {
     width: calc(100% - var(--width-));
-    z-index: 1;
+    z-index: 10;
     height: 100%;
     /* text-align: center; */
     display: flex;
